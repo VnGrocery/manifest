@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Repo manifest for VnGrocery.
+
+  The system is three repositories that ship together: the Go backend, the
+  Flutter app and the admin web UI. This file is what stitches them into one
+  working tree, so a checkout is:
+
+      repo init -u https://github.com/VnGrocery/manifest.git -b main
+      repo sync
+
+  Every project tracks main. Nothing here is pinned to a revision on purpose:
+  pinning belongs in a release manifest, not in the one people develop against.
+-->
+<manifest>
+  <remote name="vngrocery"
+          fetch="https://github.com/VnGrocery"
+          revision="main" />
+
+  <default remote="vngrocery"
+           revision="main"
+           sync-j="4" />
+
+  <!--
+    Groups let a checkout take only the part being worked on, which matters
+    because the Flutter app alone is a large clone:
+
+        repo init -g backend    # just the server
+        repo init -g app        # just the mobile app
+        repo init -g web        # just the admin UI
+
+    Everything belongs to "all" as well, which is repo's default.
+  -->
+  <project path="server"
+           name="Server"
+           groups="backend"
+           dest-branch="main" />
+
+  <project path="mobile"
+           name="Mobile"
+           groups="app"
+           dest-branch="main" />
+
+  <!--
+    The directory is "admin" while the repository is "website": the checkout is
+    named after what it is in this tree, not after what it is called on GitHub.
+  -->
+  <project path="admin"
+           name="website"
+           groups="web"
+           dest-branch="main" />
+</manifest>
