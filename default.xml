@@ -42,11 +42,13 @@
            dest-branch="main" />
 
   <!--
-    The directory is "admin" while the repository is "website": the checkout is
+    The directory is "admin" while the repository is "Website": the checkout is
     named after what it is in this tree, not after what it is called on GitHub.
+    The name is case-sensitive here - GitHub redirects a clone of "website" but
+    `repo sync` should not be relying on that redirect.
   -->
   <project path="admin"
-           name="website"
+           name="Website"
            groups="web"
            dest-branch="main" />
 </manifest>
