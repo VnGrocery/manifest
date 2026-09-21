@@ -31,23 +31,22 @@
 
     Everything belongs to "all" as well, which is repo's default.
   -->
-  <project path="server"
+  <project path="Server"
            name="Server"
            groups="backend"
            dest-branch="main" />
 
-  <project path="mobile"
+  <project path="Mobile"
            name="Mobile"
            groups="app"
            dest-branch="main" />
 
   <!--
-    The directory is "admin" while the repository is "Website": the checkout is
-    named after what it is in this tree, not after what it is called on GitHub.
-    The name is case-sensitive here - GitHub redirects a clone of "website" but
+    The directory matches the repository name, "Website", exactly - the name is
+    case-sensitive here, since GitHub redirects a clone of "website" but
     `repo sync` should not be relying on that redirect.
   -->
-  <project path="admin"
+  <project path="Website"
            name="Website"
            groups="web"
            dest-branch="main" />

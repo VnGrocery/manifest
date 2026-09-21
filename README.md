@@ -79,17 +79,17 @@ repo sync
 ### 2. Chạy backend
 
 Toàn bộ hạ tầng (API, MongoDB, Vault, IPFS, Besu) chạy bằng một script trong
-`server/`:
+`Server/`:
 
 ```bash
-cd server
+cd Server
 cp .env.example .env      # điền JWT_SECRET và OPENAI_API_KEY
 ./scripts/vng up
 ./scripts/vng health
 ```
 
 API nằm ở cổng `5050` của máy host. Xem chi tiết trong
-[server/docs/HUONG-DAN-TRIEN-KHAI.md](https://github.com/VnGrocery/Server/blob/main/docs/HUONG-DAN-TRIEN-KHAI.md).
+[Server/docs/HUONG-DAN-TRIEN-KHAI.md](https://github.com/VnGrocery/Server/blob/main/docs/HUONG-DAN-TRIEN-KHAI.md).
 
 Đổ dữ liệu mẫu để có gì mà xem:
 
@@ -101,7 +101,7 @@ API nằm ở cổng `5050` của máy host. Xem chi tiết trong
 ### 3. Chạy app
 
 ```bash
-cd mobile
+cd Mobile
 flutter pub get
 flutter run
 ```
@@ -116,7 +116,7 @@ flutter run --dart-define=API_BASE_URL=http://192.168.1.10:5050
 ### 4. Chạy trang quản trị
 
 ```bash
-cd admin
+cd Website
 npm install
 npm run dev
 ```
@@ -127,9 +127,9 @@ VnGrocery được xây dựng theo mô hình gồm các thành phần chính:
 
 ```text
 VnGrocery/              # thư mục repo sync tạo ra
-├── server/             # Go API, worker, hợp đồng IntegrityRegistry
-├── mobile/             # ứng dụng Flutter cho người mua và người bán
-├── admin/              # trang quản trị React + Vite
+├── Server/             # Go API, worker, hợp đồng IntegrityRegistry
+├── Mobile/             # ứng dụng Flutter cho người mua và người bán
+├── Website/            # trang quản trị React + Vite
 └── .repo/              # dữ liệu nội bộ của repo tool
 ```
 
@@ -165,7 +165,7 @@ Blockchain được sử dụng để tăng tính minh bạch và khả năng ki
 ## Đóng góp
 
 Repo này chỉ chứa manifest. Thay đổi mã nguồn gửi vào đúng project con
-(`Server`, `Mobile`, `website`); chỉ sửa `default.xml` khi thêm/bớt project
+(`Server`, `Mobile`, `Website`); chỉ sửa `default.xml` khi thêm/bớt project
 hoặc đổi nhánh mặc định.
 
 1. Fork repository.
