@@ -4,6 +4,11 @@
 
 VnGrocery là nền tảng truy xuất và minh bạch nguồn gốc sản phẩm, ứng dụng **Blockchain** nhằm lưu trữ, xác thực và chia sẻ thông tin về quá trình hình thành, vận chuyển và phân phối sản phẩm.
 
+## Phân công công việc
+
+<!-- assignments:start -->
+<!-- assignments:end -->
+
 ## Yêu cầu hệ thống
 
 Trước khi cài đặt, đảm bảo môi trường đã có:

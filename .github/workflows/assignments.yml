@@ -1,0 +1,64 @@
+name: Cập nhật phân công công việc
+
+# Bảng phân công trong README được sinh lại từ GitHub Project, mỗi ngày một lần.
+on:
+  schedule:
+    - cron: '0 17 * * *'   # 00:00 giờ Việt Nam
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+env:
+  PROJECT_OWNER: PTUDW-2026-Nhom2
+  PROJECT_NUMBER: 2
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Sinh bảng phân công
+        env:
+          # GITHUB_TOKEN không đọc được project của org: cần PAT có scope read:project.
+          GH_TOKEN: ${{ secrets.PROJECT_TOKEN }}
+        run: |
+          set -euo pipefail
+          gh project item-list "$PROJECT_NUMBER" --owner "$PROJECT_OWNER" \
+            --format json --limit 500 > /tmp/items.json
+
+          {
+            echo "| Trạng thái | Công việc | Phụ trách |"
+            echo "|---|---|---|"
+            jq -r '
+              def rank: {"In Progress":0,"Todo":1,"Done":2}[.status // "Todo"] // 3;
+              [.items[]] | sort_by(rank, (.content.number // 0))[]
+              | "| \(.status // "Todo") | "
+                + (if .content.url then "[#\(.content.number)](\(.content.url)) " else "" end)
+                + "\(.title) | "
+                + ((.assignees // []) | if length == 0 then "—" else map("@" + .) | join(", ") end)
+                + " |"
+            ' /tmp/items.json
+            echo
+            echo "_Tự động cập nhật lúc $(TZ=Asia/Ho_Chi_Minh date '+%H:%M %d/%m/%Y') (giờ VN)._"
+          } > /tmp/table.md
+
+      - name: Chèn vào README
+        run: |
+          set -euo pipefail
+          awk '
+            /<!-- assignments:start -->/ { print; while ((getline l < "/tmp/table.md") > 0) print l; skip = 1; next }
+            /<!-- assignments:end -->/   { skip = 0 }
+            !skip
+          ' README.md > /tmp/README.md
+          mv /tmp/README.md README.md
+
+      - name: Commit nếu có thay đổi
+        run: |
+          git config user.name  'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git diff --quiet README.md || {
+            git commit -am 'chore: cập nhật bảng phân công công việc'
+            git push
+          }
